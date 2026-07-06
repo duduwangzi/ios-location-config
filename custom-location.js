@@ -43,7 +43,13 @@
   ]);
   const patchW = wl => concat(parseF(wl).map(f => f.n === 2 && f.wt === 2 ? makeF(2, 2, patchLoc(f.val)) : f.raw));
   const patchC = cl => concat(parseF(cl).map(f => f.n === 5 && f.wt === 2 ? makeF(5, 2, patchLoc(f.val)) : f.raw));
-  const patchPayload = pl => concat(parseF(pl).filter(f => ![3,4,33].includes(f.n)).map(f => f.n === 2 && f.wt === 2 ? makeF(2, 2, patchW(f.val)) : [22,24].includes(f.n) && f.wt === 2 ? makeF(f.n, 2, patchC(f.val)) : f.raw));
+  
+  // 关键修复点：剔除原本一刀切的根节点过滤，保留高德所需要的所有多余根字段
+  const patchPayload = pl => concat(parseF(pl).map(f => {
+    if (f.n === 2 && f.wt === 2) return makeF(2, 2, patchW(f.val));
+    if ([22,24].includes(f.n) && f.wt === 2) return makeF(f.n, 2, patchC(f.val));
+    return f.raw;
+  }));
 
   const process = () => {
     try {
