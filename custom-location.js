@@ -7,7 +7,7 @@
     latitude: 37.3349,
     longitude: -122.00902,
     horizontalAccuracy: 39,
-    verticalAccuracy: 1000,
+    verticalAccuracy: 30,
     altitude: 530,
     unknownValue4: 3,
     motionActivityType: 63,
